@@ -1181,15 +1181,18 @@ cd wazuh</div>
                         
                         <li class="guide-step">
                             <h3>Create a new VM in Proxmox</h3>
-                            <p>On your PROXMOX Server, create a new virtual machine with ID 300.</p>
+                            <p>On your PROXMOX Server, create a new virtual machine with ClientID 300 .</p>
                             <div class="note">
-                                <strong>Note:</strong> You can name it "wazuh-server" for easy identification.
+                                <strong>Note:</strong> You can name it "wazuh-server" for easy identification, also you can change the ClientID, I use 300 as example.
                             </div>
                         </li>
                         
                         <li class="guide-step">
                             <h3>Import the disk to Proxmox</h3>
                             <p>Run the qm importdisk command to import the VMDK file:</p>
+                            <div class="note">
+                                <strong>Note:</strong> Make sure the ClientID you created matches when you run the importdisk command. 
+                            </div>
                             <div class="code-block">qm importdisk 300 /var/lib/vz/wazuh/wazuh-4.13.0-disk-1.vmdk local-lvm</div>
                         </li>
                         
@@ -1312,7 +1315,7 @@ Password: admin</div>
                         <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="CCNA Exam Prep">
                     </div>
                     <div class="other-content">
-                        <h3>CCNA Exam Preparation Test</h3>
+                        <h3>CCNA Exam Knowledge Test</h3>
                         <p>Practice tests and study materials for the Cisco Certified Network Associate certification.</p>
                         <a href="https://ozborndrew.github.io/CCNA_Exam/" class="btn" target="_blank">Start Preparing</a>
                     </div>
@@ -1322,7 +1325,7 @@ Password: admin</div>
                         <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Security+ Exam Prep">
                     </div>
                     <div class="other-content">
-                        <h3>CompTIA Security+ Preparation Test</h3>
+                        <h3>CompTIA Security+ Knowledge Test</h3>
                         <p>Resources to help you prepare for the CompTIA Security+ certification exam.</p>
                         <a href="https://ozborndrew.github.io/CompTIA-Security/" class="btn" target="_blank">Start Preparing</a>
                     </div>
@@ -1342,7 +1345,7 @@ Password: admin</div>
                         <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="A+ Exam Prep">
                     </div>
                     <div class="other-content">
-                        <h3>CompTIA A+ Preparation Test</h3>
+                        <h3>CompTIA A+ Knowledge Test</h3>
                         <p>Study materials for the CompTIA A+ certification, the starting point for IT careers.</p>
                         <a href="https://ozborndrew.github.io/CompTIA-A-plus/" class="btn" target="_blank">Start Preparing</a>
                     </div>
@@ -1352,7 +1355,7 @@ Password: admin</div>
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cybersecurity Prep">
                     </div>
                     <div class="other-content">
-                        <h3>Cybersecurity Preparation Test</h3>
+                        <h3>Cybersecurity Knowledge Test</h3>
                         <p>Practice tests and study guides for various cybersecurity certifications.</p>
                         <a href="https://ozborndrew.github.io/CyberSecPrepTest/" class="btn" target="_blank">Start Preparing</a>
                     </div>
@@ -1362,7 +1365,7 @@ Password: admin</div>
                         <img src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Network+ Exam Prep">
                     </div>
                     <div class="other-content">
-                        <h3>CompTIA Network+ Preparation</h3>
+                        <h3>CompTIA Network+ Knowledge Test</h3>
                         <p>Resources to help you prepare for the CompTIA Network+ certification exam.</p>
                         <a href="https://ozborndrew.github.io/CompTIA-Network/" class="btn" target="_blank">Start Preparing</a>
                     </div>
