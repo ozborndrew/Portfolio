@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrew Buray - Portfolio with Wazuh Installation Guide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #f1c40f;
+            --light-color: #f5f7fa;
+            --dark-color: #333;
+            --text-color: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Header and Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(44, 62, 80, 0.95);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--accent-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-color);
+        }
+        
+        .nav-links a:hover:after, .nav-links a.active:after {
+            width: 100%;
+        }
+        
+        /* Main Content Sections */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 10rem 0;
+            position: relative;
+        }
+        
+        #hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        #hero .container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        #hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        #hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #f39c12;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .about-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .project-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tag {
+            background: var(--light-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* Blog Section */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .blog-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* Others Section */
+        .others-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .other-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .other-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .other-image {
+            height: 150px;
+            overflow: hidden;
+        }
+        
+        .other-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .other-card:hover .other-image img {
+            transform: scale(1.1);
+        }
+        
+        .other-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .other-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .other-content p {
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        
+        .skill-category {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            min-width: 250px;
+            transition: var(--transition);
+        }
+        
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .skill-category h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .skill-list li:before {
+            content: "▸";
+            color: var(--secondary-color);
+            margin-right: 0.5rem;
+        }
+        
+        /* Edit Button */
+        .edit-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            z-index: 10;
+        }
+        
+        .project-card:hover .edit-btn,
+        .blog-card:hover .edit-btn {
+            opacity: 1;
+        }
+        
+        .edit-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        /* Password Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        /* Edit Steps Guide */
+        .edit-steps {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+        
+        .edit-steps h4 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .edit-steps ol {
+            padding-left: 1.5rem;
+        }
+        
+        .edit-steps li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Wazuh Guide Styles */
+        .guide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .guide-header {
+            background: linear-gradient(135deg, #1a3a8f 0%, #2c5aa0 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .guide-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .guide-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .guide-content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .guide-steps {
+            flex: 3;
+            min-width: 300px;
+            padding: 30px;
+        }
+        
+        .guide-step {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-left: 5px solid #2c5aa0;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .guide-step:before {
+            content: counter(step-counter);
+            background: #2c5aa0;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: -15px;
+            top: 25px;
+        }
+        
+        .guide-step h3 {
+            color: #1a3a8f;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .guide-step p {
+            margin-bottom: 15px;
+        }
+        
+        .guide-step img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            display: block;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        
+        .note {
+            background: #e6f3ff;
+            border-left: 4px solid #2c5aa0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .guide-sidebar {
+            flex: 1;
+            min-width: 250px;
+            background: #f0f4f8;
+            padding: 30px;
+        }
+        
+        .guide-sidebar h2 {
+            color: #1a3a8f;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2c5aa0;
+        }
+        
+        .prerequisites, .resources {
+            margin-bottom: 30px;
+        }
+        
+        .prerequisites ul, .resources ul {
+            list-style-type: none;
+        }
+        
+        .prerequisites li, .resources li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .prerequisites li:before, .resources li:before {
+            content: "✓";
+            color: #2c5aa0;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .guide-footer {
+            text-align: center;
+            padding: 20px;
+            background: #1a3a8f;
+            color: white;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .guide-content {
+                flex-direction: column;
+            }
+            
+            .guide-sidebar {
+                order: -1;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links a:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--secondary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 99;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.mobile-open {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 0.5rem 0;
+                text-align: center;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            #hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            #hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            section {
+                padding: 3rem 0;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Header with Navigation -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo"><i class="fas fa-laptop-code"></i> Andrew Buray</div>
+                <button class="mobile-menu-btn">☰</button>
+                <ul class="nav-links">
+                    <li><a href="#" class="active" onclick="showSection('hero')">Home</a></li>
+                    <li><a href="#" onclick="showSection('about')">About</a></li>
+                    <li><a href="#" onclick="showSection('projects')">Projects</a></li>
+                    <li><a href="#" onclick="showSection('blog')">Blog</a></li>
+                    <li><a href="#" onclick="showSection('wazuh-guide')">Wazuh Guide</a></li>
+                    <li><a href="#" onclick="showSection('others')">Exam Prep</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="page-section">
+        <div class="container">
+            <h1>Andrew Buray</h1>
+            <p>IT Specialist | Network Engineer | Cybersecurity Enthusiast</p>
+            <div style="margin-top: 2rem;">
+                <a href="#" class="btn" onclick="showSection('projects')">View My Work</a>
+                <a href="#" class="btn btn-accent" onclick="showSection('about')">About Me</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="page-section hidden">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! I'm Andrew Buray, an IT professional with expertise in network engineering, virtualization, and cybersecurity. I have extensive experience working with technologies like Proxmox for virtualization, Cisco networking equipment, and various cybersecurity tools.</p>
+                    <p>My passion lies in creating efficient, secure IT infrastructures and sharing knowledge through technical documentation and tutorials. I believe in continuous learning and staying updated with the latest industry trends.</p>
+                    <p>When I'm not working on IT projects, I enjoy contributing to open-source communities, writing technical blogs, and preparing study materials for certifications like CCNA and cybersecurity fundamentals.</p>
+                    
+                    <h3 style="margin-top: 2rem;">My Skills</h3>
+                    <div class="skills-container" style="margin-top: 1rem;">
+                        <div class="skill-category">
+                            <h3>Networking</h3>
+                            <ul class="skill-list">
+                                <li>Cisco CCNA/CCNP</li>
+                                <li>Network Design & Security</li>
+                                <li>VPN & Firewall Configuration</li>
+                                <li>TCP/IP, DNS, DHCP</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h3>Virtualization</h3>
+                            <ul class="skill-list">
+                                <li>Proxmox VE</li>
+                                <li>VMware vSphere</li>
+                                <li>Containerization (Docker)</li>
+                                <li>Cloud Platforms (AWS, Azure)</li>
+                            </ul>
+                        </div>
+                        <div class="skill-category">
+                            <h3>Cybersecurity</h3>
+                            <ul class="skill-list">
+                                <li>Security Auditing</li>
+                                <li>Vulnerability Assessment</li>
+                                <li>Incident Response</li>
+                                <li>Security Hardening</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Andrew Buray">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="page-section hidden">
+        <div class="container">
+            <h2 class="section-title">My Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card" data-id="project1">
+                    <button class="edit-btn" onclick="requestEditAccess('project1')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Wazuh on Proxmox">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Wazuh on Proxmox Installation Guide</h3>
+                        <p class="project-description">A comprehensive guide to installing Wazuh security monitoring as a virtual machine on Proxmox VE.</p>
+                        <div class="project-tags">
+                            <span class="tag">Security</span>
+                            <span class="tag">Proxmox</span>
+                            <span class="tag">Wazuh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-id="project2">
+                    <button class="edit-btn" onclick="requestEditAccess('project2')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Technical Blog">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Technical Blog Platform</h3>
+                        <p class="project-description">Building a custom blog platform to share IT tutorials, project documentation, and technology insights.</p>
+                        <div class="project-tags">
+                            <span class="tag">Web Development</span>
+                            <span class="tag">Content Management</span>
+                            <span class="tag">Documentation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-id="project3">
+                    <button class="edit-btn" onclick="requestEditAccess('project3')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="project-image">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Network Design">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Enterprise Network Design</h3>
+                        <p class="project-description">Designing and implementing a secure, scalable enterprise network infrastructure with monitoring and automation.</p>
+                        <div class="project-tags">
+                            <span class="tag">Network Design</span>
+                            <span class="tag">Cisco</span>
+                            <span class="tag">Security</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="page-section hidden">
+        <div class="container">
+            <h2 class="section-title">Technical Blog</h2>
+            <div class="blog-grid">
+                <div class="blog-card" data-id="blog1">
+                    <button class="edit-btn" onclick="requestEditAccess('blog1')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Proxmox Tutorial">
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Getting Started with Proxmox Virtualization</h3>
+                        <p class="blog-description">A step-by-step guide to setting up your first Proxmox server for home lab or small business use.</p>
+                        <div class="blog-meta">
+                            <span class="blog-date">March 15, 2023</span>
+                            <span class="blog-read-time">15 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card" data-id="blog2">
+                    <button class="edit-btn" onclick="requestEditAccess('blog2')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="CCNA Guide">
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">CCNA Study Guide - Routing Protocols</h3>
+                        <p class="blog-description">Deep dive into OSPF, EIGRP, and BGP routing protocols with practical examples and lab scenarios.</p>
+                        <div class="blog-meta">
+                            <span class="blog-date">February 28, 2023</span>
+                            <span class="blog-read-time">22 min read</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card" data-id="blog3">
+                    <button class="edit-btn" onclick="requestEditAccess('blog3')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Security Best Practices">
+                    </div>
+                    <div class="blog-content">
+                        <h3 class="blog-title">Network Security Best Practices</h3>
+                        <p class="blog-description">Essential security measures every network administrator should implement to protect their infrastructure.</p>
+                        <div class="blog-meta">
+                            <span class="blog-date">January 12, 2023</span>
+                            <span class="blog-read-time">18 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wazuh Guide Section -->
+    <section id="wazuh-guide" class="page-section hidden">
+        <div class="guide-container">
+            <div class="guide-header">
+                <h1>Wazuh on Proxmox Installation Guide</h1>
+                <p>Step-by-step instructions to install and configure Wazuh as a virtual machine on Proxmox VE</p>
+            </div>
+            
+            <div class="guide-content">
+                <div class="guide-steps">
+                    <ol style="list-style: none; counter-reset: step-counter;">
+                        <li class="guide-step">
+                            <h3>Open any browser and search for WAZUH installation</h3>
+                            <p>Navigate to the official Wazuh website to begin the installation process.</p>
+                            <div class="note">
+                                <strong>Note:</strong> Ensure you have a stable internet connection for downloading required files.
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Click Installation Alternatives > click virtual machine (OVA)</h3>
+                            <p>Select the OVA option for virtual machine deployment.</p>
+                            <!-- Placeholder for image -->
+                            <div style="background: #e9ecef; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 15px 0;">
+                                <p>Image: Wazuh Installation Alternatives page showing OVA option</p>
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Copy the OVA file link</h3>
+                            <p>On the package - Right click on wazuh-4.13.0.ova and select "Copy link address".</p>
+                            <!-- Placeholder for image -->
+                            <div style="background: #e9ecef; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 15px 0;">
+                                <p>Image: Wazuh OVA file with right-click context menu</p>
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Access Proxmox server shell</h3>
+                            <p>Open your PROXMOX server > select the node > select shell.</p>
+                            <!-- Placeholder for image -->
+                            <div style="background: #e9ecef; height: 200px; display: flex; align-items: center; justify-content: center; border-radius: 5px; margin: 15px 0;">
+                                <p>Image: Proxmox interface showing shell option</p>
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Create a folder for the OVA file</h3>
+                            <p>Navigate to /var/lib/vz and create a folder for the .ova file container:</p>
+                            <div class="code-block">cd /var/lib/vz
+mkdir wazuh
+cd wazuh</div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Download the Wazuh OVA package</h3>
+                            <p>Run the wget command to download the OVA file:</p>
+                            <div class="code-block">wget https://packages.wazuh.com/4.x/vm/wazuh-4.13.0.ova</div>
+                            <p>Wait until the package is fully downloaded.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Extract the OVA file</h3>
+                            <p>Extract the OVA file contents using tar command:</p>
+                            <div class="code-block">tar -xvf wazuh-4.13.0.ova</div>
+                            <p>This will extract 3 files with different extensions: .ovf, .vmdk, .mf</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Create a new VM in Proxmox</h3>
+                            <p>On your PROXMOX Server, create a new virtual machine with ID 300.</p>
+                            <div class="note">
+                                <strong>Note:</strong> You can name it "wazuh-server" for easy identification.
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Import the disk to Proxmox</h3>
+                            <p>Run the qm importdisk command to import the VMDK file:</p>
+                            <div class="code-block">qm importdisk 300 /var/lib/vz/wazuh/wazuh-4.13.0-disk-1.vmdk local-lvm</div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Attach the disk and configure boot order</h3>
+                            <p>Once the import is complete:</p>
+                            <ul style="padding-left: 20px; margin: 15px 0;">
+                                <li>Select the VM 300 > Hardware > Attach the disk</li>
+                                <li>Options > Boot order > Edit > Select the disk</li>
+                            </ul>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Start the Wazuh server</h3>
+                            <p>Start the virtual machine from the Proxmox interface.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Access the Wazuh web interface</h3>
+                            <p>Open your browser and navigate to the Wazuh server IP address.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Login to Wazuh</h3>
+                            <p>Use the default credentials to log in:</p>
+                            <div class="code-block">Username: admin
+Password: admin</div>
+                            <div class="note">
+                                <strong>Security Note:</strong> Change the default password after first login.
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Deploy a new agent</h3>
+                            <p>On the dashboard, click "Deploy new agent" to set up monitoring for a client machine.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Configure the agent</h3>
+                            <p>Follow the steps in the agent deployment wizard, providing all required information.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Copy the installation command</h3>
+                            <p>Copy the command generated from the Wazuh dashboard for agent installation.</p>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Install the agent on Windows client</h3>
+                            <p>Open PowerShell or Command Prompt with admin rights, then paste and run the command:</p>
+                            <div class="code-block">Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.13.0-1.msi -OutFile $env:tmp\wazuh-agent; msiexec.exe /i $env:tmp\wazuh-agent /q WAZUH_MANAGER='192.168.0.50' WAZUH_AGENT_GROUP='default' WAZUH_AGENT_NAME='Windows11_Client'</div>
+                            <div class="note">
+                                <strong>Note:</strong> Replace the IP address and agent name with your specific values.
+                            </div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Start the Wazuh agent service</h3>
+                            <p>Run the following command to start the agent:</p>
+                            <div class="code-block">NET START Wazuh</div>
+                        </li>
+                        
+                        <li class="guide-step">
+                            <h3>Verify agent connection</h3>
+                            <p>Wait until the client appears on the Wazuh dashboard, indicating successful connection.</p>
+                        </li>
+                    </ol>
+                </div>
+                
+                <div class="guide-sidebar">
+                    <div class="prerequisites">
+                        <h2>Prerequisites</h2>
+                        <ul>
+                            <li>Proxmox VE installed and running</li>
+                            <li>Sufficient storage space (at least 20GB recommended)</li>
+                            <li>Adequate RAM (8GB minimum, 16GB recommended)</li>
+                            <li>Network connectivity between Proxmox and client machines</li>
+                            <li>Root or sudo access to Proxmox server</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="resources">
+                        <h2>Useful Resources</h2>
+                        <ul>
+                            <li><a href="https://documentation.wazuh.com/current/installation-guide/index.html" target="_blank">Wazuh Official Documentation</a></li>
+                            <li><a href="https://www.proxmox.com/en/proxmox-ve" target="_blank">Proxmox VE Website</a></li>
+                            <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html" target="_blank">Wazuh Server Installation</a></li>
+                            <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html" target="_blank">Wazuh Agent Installation</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="troubleshooting">
+                        <h2>Troubleshooting Tips</h2>
+                        <ul>
+                            <li>Check firewall settings if agents can't connect</li>
+                            <li>Verify VM resources if Wazuh runs slowly</li>
+                            <li>Check logs in /var/ossec/logs for errors</li>
+                            <li>Ensure time synchronization between server and agents</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-footer">
+                <p>Wazuh on Proxmox Installation Guide &copy; 2023 | For educational purposes only</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Others Section with Exam Prep Links -->
+    <section id="others" class="page-section hidden">
+        <div class="container">
+            <h2 class="section-title">IT Certification Exam Preparation</h2>
+            <p style="text-align: center; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Below you'll find exam preparation resources for various IT certifications. These resources are designed to help aspiring IT professionals start their journey.
+            </p>
+            <div class="others-grid">
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="CCNA Exam Prep">
+                    </div>
+                    <div class="other-content">
+                        <h3>CCNA Exam Preparation</h3>
+                        <p>Practice tests and study materials for the Cisco Certified Network Associate certification.</p>
+                        <a href="https://ozborndrew.github.io/CCNA_Exam/" class="btn" target="_blank">Start Preparing</a>
+                    </div>
+                </div>
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Security+ Exam Prep">
+                    </div>
+                    <div class="other-content">
+                        <h3>CompTIA Security+ Preparation</h3>
+                        <p>Resources to help you prepare for the CompTIA Security+ certification exam.</p>
+                        <a href="https://ozborndrew.github.io/CompTIA-Security/" class="btn" target="_blank">Start Preparing</a>
+                    </div>
+                </div>
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="IT Service Desk">
+                    </div>
+                    <div class="other-content">
+                        <h3>IT Service Desk Training</h3>
+                        <p>Training materials for IT service desk professionals and help desk technicians.</p>
+                        <a href="https://ozborndrew.github.io/ITServiceDesk/" class="btn" target="_blank">Explore Resources</a>
+                    </div>
+                </div>
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="A+ Exam Prep">
+                    </div>
+                    <div class="other-content">
+                        <h3>CompTIA A+ Preparation</h3>
+                        <p>Study materials for the CompTIA A+ certification, the starting point for IT careers.</p>
+                        <a href="https://ozborndrew.github.io/CompTIA-A-plus/" class="btn" target="_blank">Start Preparing</a>
+                    </div>
+                </div>
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cybersecurity Prep">
+                    </div>
+                    <div class="other-content">
+                        <h3>Cybersecurity Preparation</h3>
+                        <p>Practice tests and study guides for various cybersecurity certifications.</p>
+                        <a href="https://ozborndrew.github.io/CyberSecPrepTest/" class="btn" target="_blank">Start Preparing</a>
+                    </div>
+                </div>
+                <div class="other-card">
+                    <div class="other-image">
+                        <img src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Network+ Exam Prep">
+                    </div>
+                    <div class="other-content">
+                        <h3>CompTIA Network+ Preparation</h3>
+                        <p>Resources to help you prepare for the CompTIA Network+ certification exam.</p>
+                        <a href="https://ozborndrew.github.io/CompTIA-Network/" class="btn" target="_blank">Start Preparing</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h3>Andrew Buray</h3>
+                <p>IT Specialist | Network Engineer | Cybersecurity Enthusiast</p>
+                <div class="social-links">
+                    <a href="https://github.com/ozborndrew" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p>&copy; 2023 Andrew Buray. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Password Modal -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Authentication Required</h3>
+                <button class="close-modal" onclick="closePasswordModal()">&times;</button>
+            </div>
+            <div class="edit-steps">
+                <h4>Editing Steps:</h4>
+                <ol>
+                    <li>Enter the correct password to access edit mode</li>
+                    <li>Update the title, description, and image URL as needed</li>
+                    <li>For blog posts, you can also update the date and read time</li>
+                    <li>Click "Save Changes" to update your portfolio</li>
+                    <li>Your changes will be visible immediately</li>
+                </ol>
+            </div>
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label for="passwordInput">Enter Password:</label>
+                    <input type="password" id="passwordInput" class="form-control" placeholder="Enter your password" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-accent" onclick="closePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Authenticate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Content</h3>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <div class="edit-steps">
+                <h4>Editing Steps:</h4>
+                <ol>
+                    <li>Update the title to reflect your new topic</li>
+                    <li>Change the description to provide a summary of your content</li>
+                    <li>Update the image URL if you want to change the image</li>
+                    <li>For blog posts, update the date and read time if needed</li>
+                    <li>Click "Save Changes" to update your portfolio</li>
+                </ol>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editItemId">
+                <input type="hidden" id="editItemType">
+                
+                <div class="form-group">
+                    <label for="editTitle">Title</label>
+                    <input type="text" id="editTitle" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription" class="form-control"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editImageUrl">Image URL</label>
+                    <input type="text" id="editImageUrl" class="form-control">
+                </div>
+                
+                <div class="form-group" id="blogMetaGroup">
+                    <div style="display: flex; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <label for="editDate">Date</label>
+                            <input type="text" id="editDate" class="form-control">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="editReadTime">Read Time</label>
+                            <input type="text" id="editReadTime" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-accent" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+        // Set your password here (default is "admin123")
+        const EDIT_PASSWORD = "admin123";
+        let authenticated = false;
+        let currentItemId = null;
+
+        // Show/hide sections based on navigation
+        function showSection(sectionId) {
+            // Hide all page sections
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).classList.remove('hidden');
+            
+            // Update active navigation link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Find and activate the corresponding nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.getAttribute('onclick') === `showSection('${sectionId}')`) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Close mobile menu if open
+            document.querySelector('.nav-links').classList.remove('mobile-open');
+            
+            // Scroll to top when changing sections
+            window.scrollTo(0, 0);
+        }
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('mobile-open');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.remove('mobile-open');
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Show/hide back to top button
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        // Back to top functionality
+        document.getElementById('backToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Page loading animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1000);
+        });
+        
+        // Password protection functionality
+        function requestEditAccess(itemId) {
+            currentItemId = itemId;
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('passwordInput').focus();
+        }
+        
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordInput').value = '';
+            currentItemId = null;
+        }
+        
+        // Handle password form submission
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const passwordInput = document.getElementById('passwordInput').value;
+            
+            if (passwordInput === EDIT_PASSWORD) {
+                authenticated = true;
+                closePasswordModal();
+                // Now open the edit modal for the current item
+                openEditModal(currentItemId);
+            } else {
+                alert('Incorrect password. Please try again.');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        });
+        
+        // Edit functionality
+        function openEditModal(itemId) {
+            if (!authenticated) {
+                requestEditAccess(itemId);
+                return;
+            }
+            
+            const modal = document.getElementById('editModal');
+            const item = document.querySelector(`[data-id="${itemId}"]`);
+            
+            // Determine if it's a project or blog
+            const isBlog = itemId.startsWith('blog');
+            const isProject = itemId.startsWith('project');
+            
+            // Set the item ID and type
+            document.getElementById('editItemId').value = itemId;
+            document.getElementById('editItemType').value = isBlog ? 'blog' : 'project';
+            
+            // Get current values
+            const title = item.querySelector(isBlog ? '.blog-title' : '.project-title').textContent;
+            const description = item.querySelector(isBlog ? '.blog-description' : '.project-description').textContent;
+            const imageUrl = item.querySelector('img').src;
+            
+            // Set form values
+            document.getElementById('editTitle').value = title;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editImageUrl').value = imageUrl;
+            
+            // Show/hide blog-specific fields
+            const blogMetaGroup = document.getElementById('blogMetaGroup');
+            if (isBlog) {
+                blogMetaGroup.style.display = 'block';
+                const date = item.querySelector('.blog-date').textContent;
+                const readTime = item.querySelector('.blog-read-time').textContent;
+                document.getElementById('editDate').value = date;
+                document.getElementById('editReadTime').value = readTime;
+            } else {
+                blogMetaGroup.style.display = 'none';
+            }
+            
+            // Show modal
+            modal.style.display = 'flex';
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            authenticated = false; // Require password again for next edit
+            currentItemId = null;
+        }
+        
+        // Handle form submission
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const itemId = document.getElementById('editItemId').value;
+            const itemType = document.getElementById('editItemType').value;
+            const item = document.querySelector(`[data-id="${itemId}"]`);
+            
+            // Update content
+            if (itemType === 'blog') {
+                item.querySelector('.blog-title').textContent = document.getElementById('editTitle').value;
+                item.querySelector('.blog-description').textContent = document.getElementById('editDescription').value;
+                item.querySelector('.blog-date').textContent = document.getElementById('editDate').value;
+                item.querySelector('.blog-read-time').textContent = document.getElementById('editReadTime').value;
+            } else {
+                item.querySelector('.project-title').textContent = document.getElementById('editTitle').value;
+                item.querySelector('.project-description').textContent = document.getElementById('editDescription').value;
+            }
+            
+            // Update image
+            item.querySelector('img').src = document.getElementById('editImageUrl').value;
+            
+            // Close modal
+            closeEditModal();
+            
+            // Show success message
+            alert('Content updated successfully!');
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            const passwordModal = document.getElementById('passwordModal');
+            const editModal = document.getElementById('editModal');
+            
+            if (e.target === passwordModal) {
+                closePasswordModal();
+            }
+            if (e.target === editModal) {
+                closeEditModal();
+            }
+        });
+        
+        // Initialize the page to show the hero section
+        window.onload = function() {
+            showSection('hero');
+        };
+    </script>
+</body>
+</html>
